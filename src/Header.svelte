@@ -1,39 +1,27 @@
 <script>
     import Icon from 'fa-svelte';
-    import { faInbox } from '@fortawesome/free-solid-svg-icons/faInbox';
-    import { faBell } from '@fortawesome/free-regular-svg-icons/faBell';
-    import { faAngleDown } from '@fortawesome/free-solid-svg-icons/faAngleDown';
+    import NavLink from "./components/NavLink.svelte";
+    import {Session} from "svelte-session-manager/src/session";
+    import {navigate} from "svelte-routing";
 
-    export let name = "Guest";
-    export let avatarSrc = null;
-    let style = getComputedStyle(document.body);
+    let session = new Session(sessionStorage);
+    function handleLogout() {
+        session.clear();
+        session.save();
+        navigate('/');
+    }
 </script>
 
 <header>
     <div class="header-container">
-        <div class="header-left">Trelp</div>
+        <div class="header-left">interview-time-tracker</div>
         <div class="header-right">
-            <Icon class="header-icon header-icon-spacing" icon={faInbox}/>
-            <Icon class="header-icon header-icon-spacing" icon={faBell}/>
-            <div>
-                {name}
-                <Icon icon={faAngleDown}/>
-            </div>
+            <hre on:click={handleLogout}>Logout</hre>
         </div>
     </div>
 </header>
 
 <style>
-    :global(.header-icon) {
-        width: var(--header-icon-size) !important;
-        height: var(--header-icon-size) !important;
-        font-size: 1em;
-    }
-
-    :global(.header-icon-spacing) {
-            margin-left: var(--header-icon-spacing);
-    }
-
     header {
         width: 100%;
         height: 5em;
@@ -66,9 +54,5 @@
         flex-wrap: nowrap;
         align-items: center;
         justify-content: flex-end;
-    }
-
-    .header-right > * {
-        margin-left: var(--header-icon-spacing);
     }
 </style>

@@ -9,15 +9,15 @@
         attachments: [
             {
                 name: 'lt_en_1.pdf',
-                href: 'https://google.com',
+                href: 'https://google.com/',
             },
             {
                 name: 'lt_en_2.pdf',
-                href: 'https://google.com',
+                href: 'https://google.com/',
             },
             {
                 name: 'lt_en_2.pdf',
-                href: 'https://google.com',
+                href: 'https://google.com/',
             },
         ],
     };

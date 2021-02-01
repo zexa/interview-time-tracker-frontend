@@ -7,7 +7,7 @@
     <thead>
         <tr>
             {#each columns as column}
-                <th>{column.name}</th>
+                <th>{column.name ?? column.map}</th>
             {/each}
         </tr>
     </thead>
@@ -15,7 +15,7 @@
         {#each rows as row}
             <tr>
                 {#each columns as column}
-                    <td>{row[column.name]}</td>
+                    <td>{row[column.map ?? column.name]}</td>
                 {/each}
             </tr>
         {/each}

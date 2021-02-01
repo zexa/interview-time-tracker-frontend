@@ -1,13 +1,13 @@
 <script>
-    export let type = "hollow"
-    export let name = "Click me"
+    export let buttonType = "hollow"
     export let inline = false;
+    export let type = '';
 
     if (inline) {
-        type = type + " inline";
+        buttonType = buttonType + " inline";
     }
 
-    type = type + " font"
+    buttonType = buttonType + " font"
 </script>
 
 <style>
@@ -18,7 +18,7 @@
     }
 
     button {
-        font-family: Mulish;
+        font-family: Mulish,serif;
         font-style: normal;
         font-weight: bold;
         font-size: .8em;
@@ -41,4 +41,4 @@
     }
 </style>
 
-<button class={type}>{name}</button>
+<button class={buttonType} {type}><slot></slot></button>
