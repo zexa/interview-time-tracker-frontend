@@ -16,7 +16,7 @@
     <div class="header-container">
         <div class="header-left">interview-time-tracker</div>
         <div class="header-right">
-            <hre on:click={handleLogout}>Logout</hre>
+            <span on:click={handleLogout}>Logout</span>
         </div>
     </div>
 </header>

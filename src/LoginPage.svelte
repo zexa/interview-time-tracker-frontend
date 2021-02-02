@@ -10,9 +10,10 @@
 
     let isSuccess = false;
     let isLoading = false;
-    let errors = {};
+    let error = '';
 
     let session = new Session(sessionStorage);
+    isSuccess = session.isValid;
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -38,9 +39,7 @@
             if (response.ok) {
                 const data = await response.json();
                 if (!data.token) {
-                    errors = {
-                        'reason': 'Missing token'
-                    };
+                    error = 'Unexpected response';
                 }
                 const token = jwtDecode(data.token);
 
@@ -51,7 +50,7 @@
                 });
                 session.save();
             } else {
-                errors = await response.json();
+                error = await response.text();
             }
         } catch (e) {
             throw e;
@@ -59,9 +58,11 @@
     }
 
     function handleSubmit() {
+        console.log("Reached submit");
+        error = '';
         try {
             isLoading = true;
-            register(
+            login(
                 session,
                 'http://localhost:8080/login',
                 username,
@@ -100,13 +101,7 @@
             {#if isLoading}Logging in...{:else}Log in{/if}
         </Button>
 
-        {#if Object.keys(errors).length > 0}
-            <ul>
-                {#each Object.keys(errors) as field}
-                    <li>{field}: {errors[field]}</li>
-                {/each}
-            </ul>
-        {/if}
+        {#if error}{error}{/if}
 
         <br />
         <NavLink to="register">Don't have an account yet?</NavLink>

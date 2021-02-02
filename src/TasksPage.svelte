@@ -14,6 +14,8 @@
 
     let rows = [];
     let page = 0;
+    let pageSize = 50;
+    let error = '';
 
     let session = new Session(sessionStorage);
     if (!session.isValid) {
@@ -21,7 +23,41 @@
         navigate('/');
     }
 
+    let isPageChanging = false;
+    function previousPageHandler() {
+        if (isPageChanging) {
+            return;
+        }
+
+        isPageChanging = true;
+        if (page > 0) {
+            page--;
+            getRows(page).then(() => {
+                isPageChanging = false;
+            });
+        } else {
+            isPageChanging = false;
+        }
+    }
+
+    function nextPageHandler() {
+        if (isPageChanging) {
+            return;
+        }
+
+        isPageChanging = true;
+        if (rows.length >= pageSize) {
+            page++;
+            getRows(page).then(() => {
+                isPageChanging = false;
+            });
+        } else {
+            isPageChanging = false;
+        }
+    }
+
     async function getRows(page) {
+        console.log("Getting rows with page ", page);
         const response = await fetch(
             'http://localhost:8080/tasks?page=' + page,
             {
@@ -33,7 +69,11 @@
             }
         );
         if (response.ok) {
+            console.log("We got the rows");
             rows = await response.json();
+        } else {
+            console.log("Something went wrong while getting rows...");
+            error = await response.text();
         }
     }
 
@@ -45,5 +85,11 @@
     <Window name="Tasks">
         <Table {columns} {rows}/>
         <Button>Add new</Button>
+        Page: {page}
+        <br />
+        <Button inline on:click={previousPageHandler}>Previous page</Button>
+        <Button inline on:click={nextPageHandler}>Next page</Button>
+        <br />
+        {#if error}{error}{/if}
     </Window>
 </main>
