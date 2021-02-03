@@ -16,9 +16,12 @@
     let session = new Session(sessionStorage);
     isSuccess = session.isValid;
 
-    async function login(session, endpoint, username, password) {
-        try {
-            const response = await fetch(endpoint, {
+    function handleSubmit() {
+        error = '';
+        isLoading = true;
+        fetch(
+            'http://localhost:8080/login',
+            {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -27,46 +30,46 @@
                     username,
                     password
                 })
+            }
+        ).catch(e => {
+            e.response.text().then(text => {
+                error = text;
             });
-            if (response.ok) {
-                const data = await response.json();
+        }).then((response) => {
+            if (!response.ok) {
+                if (response.status === 401) {
+                    response.json().then(errData => {
+                        error = errData.message;
+                    });
+
+                    return;
+                }
+
+                response.text().then(text => {
+                    error = text;
+                })
+
+                return;
+            }
+
+            response.json().then(data => {
                 if (!data.token) {
                     error = 'Unexpected response';
                 }
-                const token = jwtDecode(data.token);
 
+                const token = jwtDecode(data.token);
                 session.update({
                     username,
                     access_token: data.token,
                     expirationDate: token.exp,
                 });
                 session.save();
-            } else {
-                error = await response.text();
-            }
-        } catch (e) {
-            throw e;
-        }
-    }
-
-    function handleSubmit() {
-        console.log("Reached submit");
-        error = '';
-        try {
-            isLoading = true;
-            login(
-                session,
-                'http://localhost:8080/login',
-                username,
-                password
-            ).then(() => {
-                isLoading = false;
                 isSuccess = true;
             });
-        } catch (e) {
+        }).finally(() => {
             isLoading = false;
-        }
-    };
+        });
+    }
 </script>
 
 <style>
