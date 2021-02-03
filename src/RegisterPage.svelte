@@ -15,9 +15,12 @@
     let session = new Session(sessionStorage);
     isSuccess = session.isValid;
 
-    async function register(session, endpoint, username, password) {
-        try {
-            const response = await fetch(endpoint, {
+    function handleSubmit() {
+        error = '';
+        isLoading = true;
+        fetch(
+            'http://localhost:8080/register',
+            {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -26,43 +29,29 @@
                     "email": username,
                     password
                 })
-            });
-            if (response.ok) {
-                const data = await response.text();
-                const token = jwtDecode(data);
+            }
+        ).then((response) => {
+            if (!response.ok) {
+                response.text().then(text => {
+                    error = text;
+                })
 
+                return;
+            }
+
+            response.text().then(data => {
+                const token = jwtDecode(data);
                 session.update({
                     username,
                     access_token: data,
                     expirationDate: token.exp,
                 });
                 session.save();
-            } else {
-                error = await response.text();
-            }
-        } catch (e) {
-            throw e;
-        }
-    }
-
-    function handleSubmit() {
-        error = '';
-        try {
-            isLoading = true;
-            register(
-                session,
-                'http://localhost:8080/register',
-                username,
-                password
-            ).then(() => {
-                isLoading = false;
-                if (error === '') {
-                    isSuccess = true;
-                }
+                isSuccess = true;
             });
-        } catch (e) {
+        }).finally(() => {
             isLoading = false;
-        }
+        });
     }
 </script>
 
