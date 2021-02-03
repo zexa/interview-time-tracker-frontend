@@ -2,16 +2,57 @@
     import Window from './components/Window.svelte';
     import Button from './components/Button.svelte';
     import Header from './Header.svelte';
+    import Datepicker from 'svelte-calendar';
+    import {getSessionOrClear} from './utils.js';
 
-    let dateFrom = '';
-    let dateTo = '';
-    let format = '';
+    let dateFrom;
+    let dateTo;
+    let format = 'csv';
 
+    let availableFormats = [
+        'csv',
+        'pdf',
+        'xlsx'
+    ];
     let error = ''
     let isLoading = false;
 
-    function handleSubmit() {
+    const session = getSessionOrClear();
 
+    function formatDate(date) {
+        return date.toISOString().substr(0, 10);
+    }
+
+    function handleSubmit() {
+        console.log("dateFrom: ", formatDate(dateFrom));
+        console.log("dateTo: ", formatDate(dateTo));
+        isLoading = true;
+        fetch(
+            'http://localhost:8080/report?' + new URLSearchParams({
+                "date_from": formatDate(dateFrom),
+                "date_to": formatDate(dateTo),
+                format
+            }),
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + session.access_token,
+                },
+            }
+        ).then(response => {
+            if (!response.ok) {
+                response.text().then(text => {
+                    error = text;
+                });
+            }
+
+            response.blob().then(blob => {
+                window.location.assign(window.URL.createObjectURL(blob));
+            });
+        }).finally(() => {
+            isLoading = false;
+        });
     }
 </script>
 
@@ -19,14 +60,20 @@
 
 <Window name="Reports">
     <form on:submit|preventDefault={handleSubmit}>
-        <label for="dateFrom">Date from</label>
-        <input id="dateFrom" name="Date from" placeholder="2021-01-28T00:00:00+00:00" bind:value={dateFrom} />
+        <label>Date from</label>
+        <Datepicker bind:selected="{dateFrom}"/>
 
-        <label for="dateTo">Date</label>
-        <input id="dateTo" name="dateTo" placeholder="2021-01-28T00:00:00+00:00" bind:value={dateTo} />
+        <label>Date</label>
+        <Datepicker bind:selected="{dateTo}"/>
 
         <label for="format">Format</label>
-        <input id="format" name="Format" placeholder="csv" bind:value={format} />
+        <select id="format" bind:value="{format}">
+            {#each availableFormats as availableFormat}
+                <option value={availableFormat}>
+                    {availableFormat}
+                </option>
+            {/each}
+        </select>
 
         <br />
         <Button type="submit">
