@@ -31,11 +31,7 @@
                     password
                 })
             }
-        ).catch(e => {
-            e.response.text().then(text => {
-                error = text;
-            });
-        }).then((response) => {
+        ).then((response) => {
             if (!response.ok) {
                 if (response.status === 401) {
                     response.json().then(errData => {
