@@ -1,9 +1,10 @@
 <script>
     import Button from './components/Button.svelte';
     import NavLink from './components/NavLink.svelte';
-    import {navigate} from 'svelte-routing'
     import {Session} from 'svelte-session-manager';
     import jwtDecode from 'jwt-decode';
+    import {redirect} from './utils';
+    import Window from "./components/Window.svelte";
 
     let username = '';
     let password = '';
@@ -14,15 +15,6 @@
 
     let session = new Session(sessionStorage);
     isSuccess = session.isValid;
-
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function redirect() {
-        await sleep(1000); // After initial page render navigate won't draw the next view without this sleep.
-        navigate('/tasks');
-    }
 
     async function login(session, endpoint, username, password) {
         try {
@@ -81,29 +73,29 @@
 
 </style>
 
-<form on:submit|preventDefault={handleSubmit}>
-    {#if isSuccess}
-        <div>
-            You've been successfully logged in. Redirecting...
-            {#await redirect()}{/await}
-        </div>
-    {:else}
-        <h1>Login</h1>
+<Window name="Login">
+    <form on:submit|preventDefault={handleSubmit}>
+        {#if isSuccess}
+            <div>
+                You've been successfully logged in. Redirecting...
+                {#await redirect('tasks')}{/await}
+            </div>
+        {:else}
+            <label for="username">Username</label>
+            <input id="username" name="username" placeholder="name@example.com" bind:value={username} />
 
-        <label for="username">Username</label>
-        <input id="username" name="username" placeholder="name@example.com" bind:value={username} />
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" bind:value={password} />
 
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" bind:value={password} />
+            <br />
+            <Button type="submit">
+                {#if isLoading}Logging in...{:else}Log in{/if}
+            </Button>
 
-        <br />
-        <Button type="submit">
-            {#if isLoading}Logging in...{:else}Log in{/if}
-        </Button>
+            {#if error}{error}{/if}
 
-        {#if error}{error}{/if}
-
-        <br />
-        <NavLink to="register">Don't have an account yet?</NavLink>
-    {/if}
-</form>
+            <br />
+            <NavLink to="register">Don't have an account yet?</NavLink>
+        {/if}
+    </form>
+</Window>

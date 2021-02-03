@@ -41,4 +41,6 @@
     }
 </style>
 
-<button class={buttonType} {type} on:click><slot></slot></button>
+<button class={buttonType} {type} on:click>
+    <slot/>
+</button>

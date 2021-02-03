@@ -5,6 +5,9 @@
     import {Session} from 'svelte-session-manager';
     import {navigate} from "svelte-routing";
     import Header from "./Header.svelte";
+    import CreateTaskModal from "./CreateTaskPage.svelte";
+    import {getContext} from "svelte";
+    import NavLink from "./components/NavLink.svelte";
 
     let columns = [
         {name: "Title", map: "title", type: "String"},
@@ -24,6 +27,7 @@
     }
 
     let isPageChanging = false;
+
     function previousPageHandler() {
         if (isPageChanging) {
             return;
@@ -84,7 +88,14 @@
     <Header/>
     <Window name="Tasks">
         <Table {columns} {rows}/>
-        <Button>Add new</Button>
+
+        <br />
+        <NavLink to="createTask">
+            <Button>Create task</Button>
+        </NavLink>
+
+        <br />
+        <br />
         Page: {page}
         <br />
         <Button inline on:click={previousPageHandler}>Previous page</Button>

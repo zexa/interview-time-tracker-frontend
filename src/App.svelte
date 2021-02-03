@@ -3,6 +3,8 @@
     import {Router, Route} from 'svelte-routing';
     import RegisterPage from './RegisterPage.svelte';
     import TasksPage from './TasksPage.svelte';
+    import ReportsPage from './ReportsPage.svelte';
+    import CreateTaskPage from './CreateTaskPage.svelte';
 
     let url = '';
 </script>
@@ -42,4 +44,6 @@
     <Route path="/" component="{LoginPage}" />
     <Route path="register" component="{RegisterPage}" />
     <Route path="tasks" component="{TasksPage}" />
+    <Route path="createTask" component="{CreateTaskPage}" />
+    <Route path="reports" component="{ReportsPage}" />
 </Router>

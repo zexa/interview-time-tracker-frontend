@@ -1,7 +1,7 @@
 <script>
     import Icon from 'fa-svelte';
     import NavLink from "./components/NavLink.svelte";
-    import {Session} from "svelte-session-manager/src/session";
+    import {Session} from "svelte-session-manager";
     import {navigate} from "svelte-routing";
 
     let session = new Session(sessionStorage);
@@ -11,15 +11,6 @@
         navigate('/');
     }
 </script>
-
-<header>
-    <div class="header-container">
-        <div class="header-left">interview-time-tracker</div>
-        <div class="header-right">
-            <span on:click={handleLogout}>Logout</span>
-        </div>
-    </div>
-</header>
 
 <style>
     header {
@@ -55,4 +46,23 @@
         align-items: center;
         justify-content: flex-end;
     }
+
+    .header-right > * {
+        margin-left: 20px;
+    }
 </style>
+
+<header>
+    <div class="header-container">
+        <div class="header-left">interview-time-tracker</div>
+        <div class="header-right">
+            <span>
+                <NavLink to="tasks">Tasks</NavLink>
+            </span>
+            <span>
+                <NavLink to="reports">Reports</NavLink>
+            </span>
+            <span on:click={handleLogout}>Logout</span>
+        </div>
+    </div>
+</header>
