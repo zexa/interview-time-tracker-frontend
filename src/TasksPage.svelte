@@ -2,14 +2,11 @@
     import Window from './components/Window.svelte';
     import Table from './components/Table.svelte';
     import Button from './components/Button.svelte';
-    import {Session} from 'svelte-session-manager';
-    import {navigate} from "svelte-routing";
     import Header from "./Header.svelte";
-    import CreateTaskModal from "./CreateTaskPage.svelte";
-    import {getContext} from "svelte";
     import NavLink from "./components/NavLink.svelte";
+    import {getSessionOrClear} from './utils.js';
 
-    let columns = [
+    const columns = [
         {name: "Title", map: "title", type: "String"},
         {name: "Date", map: "date", type: "Date"},
         {name: "Duration", map: "duration", type: "Interval"},
@@ -20,11 +17,7 @@
     let pageSize = 50;
     let error = '';
 
-    let session = new Session(sessionStorage);
-    if (!session.isValid) {
-        session.clear();
-        navigate('/');
-    }
+    const session = getSessionOrClear();
 
     let isPageChanging = false;
 
