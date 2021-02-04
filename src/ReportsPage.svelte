@@ -24,8 +24,6 @@
     }
 
     function handleSubmit() {
-        console.log("dateFrom: ", formatDate(dateFrom));
-        console.log("dateTo: ", formatDate(dateTo));
         isLoading = true;
         fetch(
             'http://localhost:8080/report?' + new URLSearchParams({

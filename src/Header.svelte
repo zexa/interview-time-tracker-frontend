@@ -1,8 +1,7 @@
 <script>
-    import Icon from 'fa-svelte';
-    import NavLink from "./components/NavLink.svelte";
-    import {Session} from "svelte-session-manager";
-    import {navigate} from "svelte-routing";
+    import NavLink from './components/NavLink.svelte';
+    import {Session} from 'svelte-session-manager';
+    import {navigate} from 'svelte-routing';
 
     let session = new Session(sessionStorage);
     function handleLogout() {

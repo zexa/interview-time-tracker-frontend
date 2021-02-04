@@ -54,24 +54,21 @@
     }
 
     async function getRows(page) {
-        console.log("Getting rows with page ", page);
         const response = await fetch(
             'http://localhost:8080/tasks?page=' + page,
             {
-                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + session.access_token
                 },
             }
         );
-        if (response.ok) {
-            console.log("We got the rows");
-            rows = await response.json();
-        } else {
-            console.log("Something went wrong while getting rows...");
+
+        if (!response.ok) {
             error = await response.text();
         }
+
+        rows = await response.json();
     }
 
     getRows(page);
