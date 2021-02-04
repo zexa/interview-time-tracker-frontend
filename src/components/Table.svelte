@@ -15,6 +15,16 @@
     applyHandlers();
 </script>
 
+<style>
+    table {
+        width: 100%;
+    }
+
+    th {
+        text-align: left;
+    }
+</style>
+
 <table>
     <thead>
         <tr>
