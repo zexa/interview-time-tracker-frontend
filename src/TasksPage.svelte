@@ -2,8 +2,8 @@
     import Window from './components/Window.svelte';
     import Table from './components/Table.svelte';
     import Button from './components/Button.svelte';
-    import Header from './componentsHeader.svelte';
-    import NavLink from "./components/NavLink.svelte";
+    import Header from './components/Header.svelte';
+    import NavLink from './components/NavLink.svelte';
     import {getSessionOrClear} from './utils.js';
 
     const columns = [
@@ -77,7 +77,11 @@
 <main>
     <Header/>
     <Window name="Tasks">
-        <Table {columns} {rows}/>
+        {#if isPageChanging}
+            Changing page...
+        {:else}
+            <Table {columns} {rows}/>
+        {/if}
 
         <br />
         <NavLink to="createTask">
