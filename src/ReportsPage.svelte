@@ -1,7 +1,7 @@
 <script>
     import Window from './components/Window.svelte';
     import Button from './components/Button.svelte';
-    import Header from './Header.svelte';
+    import Header from './components/Header.svelte';
     import Datepicker from 'svelte-calendar';
     import {getSessionOrClear} from './utils.js';
 

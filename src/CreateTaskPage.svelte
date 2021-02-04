@@ -1,6 +1,6 @@
 <script>
     import Button from './components/Button.svelte';
-    import Header from './Header.svelte';
+    import Header from './components/Header.svelte';
     import Window from './components/Window.svelte';
     import Datepicker from 'svelte-calendar';
     import {getSessionOrClear, redirect} from './utils.js';

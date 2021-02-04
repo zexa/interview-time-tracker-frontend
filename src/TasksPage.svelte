@@ -2,7 +2,7 @@
     import Window from './components/Window.svelte';
     import Table from './components/Table.svelte';
     import Button from './components/Button.svelte';
-    import Header from "./Header.svelte";
+    import Header from './componentsHeader.svelte';
     import NavLink from "./components/NavLink.svelte";
     import {getSessionOrClear} from './utils.js';
 

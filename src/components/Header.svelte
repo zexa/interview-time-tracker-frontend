@@ -1,5 +1,5 @@
 <script>
-    import NavLink from './components/NavLink.svelte';
+    import NavLink from './NavLink.svelte';
     import {Session} from 'svelte-session-manager';
     import {navigate} from 'svelte-routing';
 
