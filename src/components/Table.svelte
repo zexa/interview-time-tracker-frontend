@@ -1,6 +1,18 @@
 <script>
     export let columns = [];
     export let rows = [];
+
+    const applyHandlers = () => {
+        for (const column of columns) {
+            for (let row of rows) {
+                if (column.handler) {
+                    row[column.map ?? column.name] = column.handler(row[column.map ?? column.name]);
+                }
+            }
+        }
+    };
+
+    applyHandlers();
 </script>
 
 <table>

@@ -10,6 +10,14 @@
         {name: "Title", map: "title", type: "String"},
         {name: "Date", map: "date", type: "Date"},
         {name: "Duration", map: "duration", type: "Interval"},
+        {
+            name: "Comment",
+            map: "comments",
+            type: "String",
+            handler: comments => {
+                comments.length > 0 ? comments[0] : ''
+            }
+        }
     ];
 
     let rows = [];
